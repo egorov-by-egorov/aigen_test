@@ -1,16 +1,24 @@
 import { IDocument } from '../models/IDocuments';
+import { IFilterParams } from '../types/IFilter';
 import { api } from './api';
 
 export const documentsAPI = api.injectEndpoints( {
     endpoints: ( build ) => ( {
-        getAllDocuments: build.query<IDocument[], { limit: number, page: number }>( {
-            query: ( { limit = 9, page = 1 } ) => ( {
+        getAllDocuments: build.query<IDocument[], IFilterParams>( {
+            query: ( { _limit = '9', _page = '1' } ) => ( {
                 url: '/documents',
                 params: {
-                    _limit: limit,
-                    _page: page,
+                    _limit,
+                    _page
                 },
             } ),
+            // сделал Пример для трансформа данных
+            //transformResponse ( response: IDocument[] ): Promise<IDocument[]> | IDocument[] {
+            //    return response.map( document => {
+            //        document[ 'created-from' ] = new Date( document[ 'created-from' ] ).toISOString()
+            //        return document
+            //    } )
+            //},
             providesTags: ( result = [] ) => [ ...result.map( ( { id } ) => (
                 {
                     type: 'Documents', id
@@ -31,3 +39,7 @@ export const documentsAPI = api.injectEndpoints( {
         } )
     } ),
 } );
+
+export const {
+    useGetAllDocumentsQuery,
+} = documentsAPI

@@ -4,5 +4,7 @@ export interface IDocument {
     'id': ID,
     'title': string,
     'description': string,
-    'file-url': ''
+    'file-url': string,
+    'created-from': string,
+    'created-to': string
 }
