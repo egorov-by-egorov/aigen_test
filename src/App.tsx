@@ -1,10 +1,23 @@
-import { Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import React, { FunctionComponent } from 'react';
+import Header from './components/Header/Header';
+import SearchDocuments from './pages/SearchDocuments/SearchDocuments';
 
 const App: FunctionComponent = () => {
 
     return (
-        <Typography component={ 'h1' } variant={ 'h4' }>Hello React</Typography>
+        <Container
+            maxWidth={ false }
+            component="div"
+            sx={ {
+                backgroundColor: theme => theme.palette.background.default,
+                pt: 10,
+                display: 'flex'
+            } }
+        >
+            <Header/>
+            <SearchDocuments/>
+        </Container>
     );
 };
 
