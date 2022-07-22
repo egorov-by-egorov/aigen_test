@@ -22,7 +22,7 @@ const SearchDocumentsList: FunctionComponent<Props> = ( props ) => {
             _page: page,
             _limit: rowsPerPage
         } ) )
-    }, [ page, rowsPerPage ] )
+    }, [ page, rowsPerPage, dispatch ] )
 
     return (
         <>

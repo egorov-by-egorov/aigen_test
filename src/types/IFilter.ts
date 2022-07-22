@@ -3,5 +3,6 @@ import { ID } from './IGeneral';
 export interface IFilterParams {
     _limit?: number,
     _page?: number,
-    id?: ID
+    id?: ID,
+    title?: string
 }

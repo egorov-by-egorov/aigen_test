@@ -1,23 +1,21 @@
-import { useCallback, useRef } from 'react';
+import { useEffect, useState } from 'react';
 
 interface IUseDebounce {
-    callback: ( ...args: Array<any> ) => void;
+    value: string;
     delay: number;
 }
 
-export default function useDebounce ( { callback, delay }: IUseDebounce ) {
-    const timer = useRef<any | null>( null );
- 
-    return useCallback(
-        ( ...args: Array<any> ) => {
-            if ( timer.current ) {
-                clearTimeout( timer.current )
-            }
-            timer.current = setTimeout( () => {
-                callback( ...args )
-            }, delay )
+export default function useDebounce ( { value, delay }: IUseDebounce ): string {
+    const [ debouncedValue, setDebouncedValue ] = useState<string>( value );
+    useEffect( () => {
+            const handler = setTimeout( () => {
+                setDebouncedValue( value );
+            }, delay );
+            return () => {
+                clearTimeout( handler );
+            };
         },
-        [ callback, delay ],
-    )
-
+        [ value, delay ]
+    );
+    return debouncedValue;
 }
