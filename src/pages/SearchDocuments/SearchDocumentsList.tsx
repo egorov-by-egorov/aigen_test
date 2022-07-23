@@ -59,7 +59,7 @@ const SearchDocumentsList: FunctionComponent<Props> = ( props ) => {
                             <Typography variant={ 'h5' }>Нет документов</Typography>
             }
             <CustomPagination
-                count={ documentsList.length }
+                count={ 100 }
                 rowsPerPage={ rowsPerPage }
                 page={ page }
                 handleChangeRowsPerPageAction={ handleChangeRowsPerPage }
