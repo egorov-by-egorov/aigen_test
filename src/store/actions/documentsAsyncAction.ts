@@ -7,9 +7,8 @@ export const getAllDocuments = createAsyncThunk(
     'documents/getAllDocuments',
     async ( filter: IFilterParams, { rejectWithValue } ) => {
         console.info( 'documents: getAllDocuments' );
-        console.log( filter )
         try {
-            const response = await facadeApi.get<IDocument[]>( 'documents', {
+            const response = await facadeApi.get<IDocument[]>( '/documents', {
                 params: filter
             } );
 

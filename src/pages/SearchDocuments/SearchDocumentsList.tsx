@@ -1,4 +1,4 @@
-import { Button, List, Typography } from '@mui/material';
+import { Button, Grid, List, Typography } from '@mui/material';
 import React, { FunctionComponent, useEffect } from 'react';
 import CustomPagination from '../../components/CustomPagination/CustomPagination';
 import CustomLoader from '../../components/ui/CustomLoader/CustomLoader';
@@ -8,12 +8,7 @@ import usePagination from '../../hooks/usePagination';
 import { getAllDocuments } from '../../store/actions/documentsAsyncAction';
 import SearchDocumentsListItem from './SearchDocumentsListItem';
 
-interface OwnProps {
-}
-
-type Props = OwnProps;
-
-const SearchDocumentsList: FunctionComponent<Props> = ( props ) => {
+const SearchDocumentsList: FunctionComponent = () => {
     const dispatch = useAppDispatch();
     const { isLoading, documentsList, error } = useAppSelector( state => state.DocumentsSlice )
     const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = usePagination()
@@ -32,7 +27,7 @@ const SearchDocumentsList: FunctionComponent<Props> = ( props ) => {
                     : documentsList.length > 0 ?
                         (
                             <List
-                                sx={ { width: '100%', bgcolor: 'background.paper', flexGrow: 1 } }
+                                sx={ { bgcolor: 'background.paper', flexGrow: 1 } }
                                 component="ul"
                                 aria-labelledby="List documents"
                                 dense={ true }
@@ -50,13 +45,15 @@ const SearchDocumentsList: FunctionComponent<Props> = ( props ) => {
                         )
 
                         : error ? (
-                                <>
+                                <Grid sx={ { bgcolor: 'background.paper', flexGrow: 1 } }>
                                     <h1>Ошибка загрузки документов</h1>
                                     <Button onClick={ _ => dispatch( getAllDocuments( {} ) ) }>Повторить</Button>
-                                </>
+                                </Grid>
                             )
                             :
-                            <Typography variant={ 'h5' }>Нет документов</Typography>
+                            <Typography align={ 'center' } variant={ 'h5' }
+                                        sx={ { bgcolor: 'background.paper', flexGrow: 1 } }>Нет
+                                документов</Typography>
             }
             <CustomPagination
                 count={ 100 }

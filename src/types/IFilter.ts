@@ -4,5 +4,5 @@ export interface IFilterParams {
     _limit?: number,
     _page?: number,
     id?: ID,
-    title?: string
+    title_like?: string
 }

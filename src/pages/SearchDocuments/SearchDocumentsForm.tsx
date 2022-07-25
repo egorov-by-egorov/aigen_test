@@ -6,6 +6,7 @@ import * as yup from 'yup';
 import { useAppDispatch } from '../../hooks/redux';
 import useDebounce from '../../hooks/useDebounce';
 import { getAllDocuments } from '../../store/actions/documentsAsyncAction';
+import { IFilterParams } from '../../types/IFilter';
 
 interface FormInput {
     id: string;
@@ -33,16 +34,24 @@ const schema = yup
 
 const SearchDocumentsForm: FunctionComponent = () => {
     const dispatch = useAppDispatch()
-    const { register, formState: { errors }, reset, watch, handleSubmit } = useForm<FormInput>( {
+    const { register, formState: { errors, touchedFields }, reset, watch, handleSubmit } = useForm<FormInput>( {
         resolver: yupResolver( schema ),
     } );
     const watchID = watch( 'id' )
     const debouncedSearchTerm = useDebounce( { value: watchID, delay: 500 } )
 
     useEffect( () => {
-
         if ( debouncedSearchTerm ) {
-            dispatch( getAllDocuments( { id: Number( debouncedSearchTerm ) } ) )
+            dispatch( getAllDocuments( {
+                id: Number( debouncedSearchTerm ),
+                _page: 1,
+                _limit: 8
+            } ) )
+        } else if ( touchedFields.id ) {
+            dispatch( getAllDocuments( {
+                _page: 1,
+                _limit: 8
+            } ) )
         }
 
     }, [ debouncedSearchTerm ] );
@@ -50,21 +59,23 @@ const SearchDocumentsForm: FunctionComponent = () => {
 
     const onSubmit: SubmitHandler<FormInput> = data => {
         console.log( 'submit', data )
-        let filter = {}
+        const filter: IFilterParams = {
+            _page: 1,
+            _limit: 8,
+        }
 
         if ( data?.title ) {
-            filter = {
-                title: data.title
-            }
+            filter.title_like = data.title
         }
         dispatch( getAllDocuments( filter ) )
-        reset()
-
     };
 
     const onReset = () => {
         reset()
-        dispatch( getAllDocuments( {} ) )
+        dispatch( getAllDocuments( {
+            _page: 1,
+            _limit: 8
+        } ) )
     }
 
     return (
